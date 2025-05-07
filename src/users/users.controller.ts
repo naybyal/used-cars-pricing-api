@@ -1,5 +1,5 @@
 import { Body, Controller, Post, Get } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
+import { CreateUserDto } from './dtos/create-user.dto';
 import { UsersService } from './users.service';
 
 @Controller('auth')
@@ -21,4 +21,6 @@ export class UsersController {
         // The @Body() decorator is used to extract the request body and map it to the CreateUserDto object.
         this.usersService.create(body.email, body.password);
     }
+
+    
 }

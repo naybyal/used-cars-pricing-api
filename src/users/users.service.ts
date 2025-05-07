@@ -20,8 +20,24 @@ export class UsersService {
         password: string
     )  {
          const user = this.repo.create({ email, password });
-            // The create method is used to create a new user object.
-            // It takes an object with the email and password properties.
+        // The create method is used to create a new user object.
+        // It takes an object with the email and password properties.
         return this.repo.save(user);
     }
+
+    findOne(
+        id: number
+    ) {
+        return this.repo.findOneBy({ id });
+    }
+
+    find(
+        email: string
+    ) {
+        return this.repo.find({ where: { email } });
+    }
+
+    update() {}
+
+    remove() {}
 }
