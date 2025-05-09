@@ -13,7 +13,26 @@ export class AuthService {
     async signin(
         email: string,
         password: string
-    ) {}
+    ) {
+
+        // Find the user by email
+        const [user] = await this.usersService.find(email);
+
+        if (!user)
+            throw new BadRequestException('Invalid credentials!');
+
+        // Get the salt and hash from the stored password
+        const [salt, storedHash] = user.password.split('.');
+
+        // Hash the password with the salt
+        const hash = (await scrypt(password, salt, 32)) as Buffer;
+        
+        // Compare the hash with the stored hash
+        if (storedHash !== hash.toString('hex'))
+            throw new BadRequestException('Invalid credentials!');
+    
+        return user;
+    }
 
     async signup(
         email: string,
