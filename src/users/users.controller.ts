@@ -14,6 +14,7 @@ import {
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { UsersService } from './users.service';
+import { AuthService } from './auth.service';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { UserDto } from './dtos/user.dto';
 
@@ -23,20 +24,18 @@ import { UserDto } from './dtos/user.dto';
 export class UsersController {
 
     constructor(
-        // The constructor is used to inject dependencies into the class.
-        // In this case, we are injecting the UsersService.
-        private usersService: UsersService
+        private usersService: UsersService,
+        private authService: AuthService
     ) {}
 
     @Post('/signup')
     createUser(
         @Body() body: CreateUserDto
     ) {
-        // The createUser method is used to handle the POST request to the /signup endpoint.
-        // It takes a CreateUserDto object as the request body.
-        // It calls the create method of the UsersService to create a new user.
-        // The @Body() decorator is used to extract the request body and map it to the CreateUserDto object.
-        this.usersService.create(body.email, body.password);
+        return this.authService.signup(
+            body.email,
+            body.password
+        );
     }
 
     @Get('/:id')
@@ -71,5 +70,4 @@ export class UsersController {
     ) {
         return this.usersService.update(parseInt(id), body);
     }
-
 }
