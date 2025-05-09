@@ -18,9 +18,7 @@ export function Serialize(dto: ClassConstructor) {
 
 export class SerializeInterceptor implements NestInterceptor {
 
-    constructor(private dto: ClassConstructor) {
-    
-    }
+    constructor(private dto: ClassConstructor) {}
 
     intercept(
         context: ExecutionContext,
@@ -34,7 +32,7 @@ export class SerializeInterceptor implements NestInterceptor {
                     enableImplicitConversion: true,
                     strategy: 'excludeAll',
                     groups: ['user'],
-                });
+                }); 
             }),
         )
     }
