@@ -8,32 +8,31 @@ import { User } from './user.entity';
 export class UsersService {
 
     constructor(
-        @InjectRepository(User)     // Inject the User repository (dependency injection)
+        @InjectRepository(User)   
         private repo: Repository<User>
-    ) {
-        // The constructor is used to inject dependencies into the class.
-        // In this case, we are injecting the User repository.
-    }
+    ) {}
 
     create(
         email: string,
         password: string
     )  {
-         const user = this.repo.create({ email, password });
-        // The create method is used to create a new user object.
-        // It takes an object with the email and password properties.
+
+        const user = this.repo.create({ email, password });
+       
         return this.repo.save(user);
     }
 
     findOne(
         id: number
     ) {
+
         return this.repo.findOneBy({ id });
     }
 
     find(
         email: string
     ) {
+
         return this.repo.find({ where: { email } });
     }
 
@@ -41,6 +40,7 @@ export class UsersService {
         id: number,
         attributes: Partial<User>
     ) {
+
         const user = await this.findOne(id);
 
         if (!user) 
@@ -53,6 +53,7 @@ export class UsersService {
     async remove(
         id: number
     ) {
+
         const user = await this.findOne(id);
 
         if (!user)
