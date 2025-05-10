@@ -8,8 +8,7 @@ import {
     Param, 
     Query, 
     NotFoundException,
-    UseInterceptors,
-    ClassSerializerInterceptor
+    Session,
 } from '@nestjs/common';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
@@ -27,6 +26,21 @@ export class UsersController {
         private usersService: UsersService,
         private authService: AuthService
     ) {}
+
+    @Get('/colors/:color')
+    setColor(
+        @Param('color') color: string,
+        @Session() session: any
+    ) {
+        session.color = color;
+    }
+
+    @Get('/colors')
+    getColor(
+        @Session() session: any
+    ) {
+        return session.color;
+    }
 
     @Post('/signup')
     createUser(
@@ -80,4 +94,5 @@ export class UsersController {
     ) {
         return this.usersService.update(parseInt(id), body);
     }
+
 }
