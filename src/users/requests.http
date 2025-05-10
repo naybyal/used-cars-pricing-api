@@ -9,14 +9,22 @@ Content-Type: application/json
 }
 
 
-### Login a user
+### Sign in a user
 POST http://localhost:3000/auth/signin
 Content-Type: application/json
 
 {
-    "email": "testuserv2@gmail.com",
+    "email": "testuserv1@gmail.com",
     "password": "My_test_password@123"
 }
+
+
+### Sign out a user
+POST http://localhost:3000/auth/signout
+
+
+### Get the currently signed in user
+GET http://localhost:3000/auth/whoami
 
 
 ### Find a particular user w/ id
