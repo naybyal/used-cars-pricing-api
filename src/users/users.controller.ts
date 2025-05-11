@@ -8,9 +8,10 @@ import {
     Param, 
     Query, 
     NotFoundException,
+    UseGuards,
     Session,
-
 } from '@nestjs/common';
+import { AuthGuard } from 'src/guards/auth.guard';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { UsersService } from './users.service';
@@ -30,8 +31,8 @@ export class UsersController {
     ) {
     }
 
-
     @Get('/whoami')
+    @UseGuards(AuthGuard)
     whoAmI(
         @CurrentUser() user: User
     ) {
@@ -39,7 +40,6 @@ export class UsersController {
         return user;
     }
     
-
     @Post('/signup')
     async createUser(
         @Body() body: CreateUserDto,
