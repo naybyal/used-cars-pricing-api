@@ -4,8 +4,19 @@ import { UsersService } from "./users.service";
 
 it('Can create an instance of auth service', async () => {
     
+    const fakeUsersService = {
+        find: (email: string) => Promise.resolve([]),
+        create: (email: string, password: string) => Promise.resolve({ id: 1, email, password }),
+    };
+
     const module = await Test.createTestingModule({
-        providers: [AuthService, UsersService],
+        providers: [
+            AuthService, 
+            {
+                provide: UsersService,
+                useValue: fakeUsersService,
+            },
+        ],
     }).compile();
 
     const authService = module.get(AuthService);
