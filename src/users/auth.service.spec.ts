@@ -12,12 +12,21 @@ describe('AuthService', () => {
     let fakeUsersService: Partial<UsersService>;
 
     beforeEach(async () => {
+        const users: User[] = [];
+        
         fakeUsersService = {
-            find: (email: string) => Promise.resolve([]),
-            create: (email: string, password: string) => 
-                Promise.resolve({ id: 1, email, password } as User),
+            find: (email: string) => {
+                const filteredUsers = users.filter(user => user.email === email);
+                
+                return Promise.resolve(filteredUsers);
+            },
+            create: (email: string, password: string) => {
+                const user = { id: Math.floor(Math.random() * 1000), email, password } as User
+                users.push(user);
+                
+                return Promise.resolve(users[users.length - 1]);
+            }
         };
-
 
         const module = await Test.createTestingModule({
             providers: [
@@ -60,7 +69,7 @@ describe('AuthService', () => {
     it ("Throws an error if signin is called with an unused email", async () => {
         await expect(
             authService.signin("test@testifed.com", "testPass404"),
-        ).rejects.toThrow(NotFoundException);
+        ).rejects.toThrow(BadRequestException);
     });
 
     it ("Throws an error if an invalid password is provided", async () => {
@@ -75,8 +84,7 @@ describe('AuthService', () => {
     it ("Returns a user if correct password is provided", async () => {
         fakeUsersService.find = () =>
             Promise.resolve([{ id: 1, email: "testify@testify.com", password: "b29c8b660032e204.0bcc5ec1d4f7c9d6ca64734a012af1d53fdca94f05cba94c83d947c6cb4f6e44" } as User]);
-        
-        const user = await authService.signin("testify@testify.com", "testPass404");
+               const user = await authService.signin("testify@testify.com", "testPass404");
         expect(user).toBeDefined();
     });
 });
