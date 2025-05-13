@@ -10,7 +10,7 @@ import { User } from './users/entities/user.entity';
 import { Report } from './reports/report.entity';
 import { join } from 'path';
 
-const cookieSession = require('cookie-session');
+const cookieSession = require('cookie-session');  
 
 @Module({
   imports: [
